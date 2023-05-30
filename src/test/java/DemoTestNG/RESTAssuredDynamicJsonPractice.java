@@ -51,8 +51,8 @@ public class RESTAssuredDynamicJsonPractice {
 
         System.out.println(response);
         JsonPath js = ReusableMethods.rawStringToJson(response);
-
-
+        String Id = js.get("ID");
+        System.out.println(Id);
 
 
     }

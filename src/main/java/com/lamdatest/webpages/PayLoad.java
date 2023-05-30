@@ -62,8 +62,8 @@ public class PayLoad {
     public static String addBook(){
         String Payload = "{\n" +
                 "\"name\":\"The Power of Focus\",\n" +
-                "\"isbn\":\"bcd3\",\n" +
-                "\"aisle\":\"2222373\",\n" +
+                "\"isbn\":\"bcsd31\",\n" +
+                "\"aisle\":\"2235131231\",\n" +
                 "\"author\":\"Ahmed Usman\"\n" +
                 "}\n";
         return Payload;
