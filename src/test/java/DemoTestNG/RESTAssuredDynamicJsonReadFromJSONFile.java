@@ -17,7 +17,7 @@ public class RESTAssuredDynamicJsonReadFromJSONFile {
     @Test(dataProvider = "BooksData")
     public void addBook(String isbn, String aisle) throws IOException {
 
-/** Given: This section is used to set up the initial conditions or inputs for the API request.
+ /** Given: This section is used to set up the initial conditions or inputs for the API request.
  *  It includes details like base URI, headers, query parameters, request body, etc.
  *  Remember that "given" is followed by a dot (.) to chain the methods.
 
