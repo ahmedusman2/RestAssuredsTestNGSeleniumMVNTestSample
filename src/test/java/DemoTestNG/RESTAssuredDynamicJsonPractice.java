@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.*;
 
 public class RESTAssuredDynamicJsonPractice {
     @Test(dataProvider = "BooksData")
-    public void addBook() {
+    public void addBook(String isbn, String aisle) {
 
 /** Given: This section is used to set up the initial conditions or inputs for the API request.
  *  It includes details like base URI, headers, query parameters, request body, etc.
@@ -47,7 +47,7 @@ public class RESTAssuredDynamicJsonPractice {
 
         String response = given().baseUri("http://216.10.245.166")
                 .queryParam("Content-Type", "application/json")
-                .body(PayLoad.addBook("12333", "12330"))
+                .body(PayLoad.addBook(isbn, aisle))
                 .when().post("/Library/Addbook.php")
                 .then().log().all()
                 .extract().response().asString();
@@ -60,7 +60,7 @@ public class RESTAssuredDynamicJsonPractice {
 
     }
 
-    // one way of creating a 2 dimentional array for entering book data
+    // one way of creating a 2 dimensional array for entering book data
  /*   @DataProvider(name = "BooksData")
     public Object[][] getData() {
         Object[][] data = new Object[2][2];
