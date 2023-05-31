@@ -4,12 +4,13 @@ import com.lamdatest.webpages.PayLoad;
 import com.lamdatest.webpages.ReusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
 
 public class RESTAssuredDynamicJsonPractice {
-    @Test
+    @Test(dataProvider = "BooksData")
     public void addBook() {
 
 /** Given: This section is used to set up the initial conditions or inputs for the API request.
@@ -44,7 +45,9 @@ public class RESTAssuredDynamicJsonPractice {
 
         //RestAssured.baseURI = "http://216.10.245.166";
 
-        String response = given().baseUri("http://216.10.245.166").queryParam("Content-Type", "application/json").body(PayLoad.addBook())
+        String response = given().baseUri("http://216.10.245.166")
+                .queryParam("Content-Type", "application/json")
+                .body(PayLoad.addBook("12333", "12330"))
                 .when().post("/Library/Addbook.php")
                 .then().log().all()
                 .extract().response().asString();
@@ -54,6 +57,26 @@ public class RESTAssuredDynamicJsonPractice {
         String Id = js.get("ID");
         System.out.println(Id);
 
+
+    }
+
+    // one way of creating a 2 dimentional array for entering book data
+ /*   @DataProvider(name = "BooksData")
+    public Object[][] getData() {
+        Object[][] data = new Object[2][2];
+        data[0][0] = "dede";
+        data[0][1] = "ffr";
+        data[1][0] = "wefw";
+        data[1][1] = "gdxgd";
+        data[2][0] = "334dfs";
+        data[2][1] = "dadf";
+
+        return data;
+    }*/
+
+    @DataProvider(name = "BooksData")
+    public Object[][] getData() {
+        return new Object[][]{{"random101", "random102"}, {"random201", "random202"}, {"random301", "random303"}};
 
     }
 

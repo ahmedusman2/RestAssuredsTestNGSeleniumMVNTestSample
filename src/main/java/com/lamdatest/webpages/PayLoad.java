@@ -32,7 +32,7 @@ public class PayLoad {
     }
 
 
-    public static String coursePrice(){
+    public static String coursePrice() {
         return "{\n" +
                 "  \"dashboard\": {\n" +
                 "    \"purchaseAmount\": 910,\n" +
@@ -59,11 +59,11 @@ public class PayLoad {
     }
 
 
-    public static String addBook(){
+    public static String addBook(String isbn, String aisle) {
         String Payload = "{\n" +
                 "\"name\":\"The Power of Focus\",\n" +
-                "\"isbn\":\"bcsd31\",\n" +
-                "\"aisle\":\"2235131231\",\n" +
+                "\"isbn\":\""+isbn+"\",\n" +
+                "\"aisle\":\""+aisle+"\",\n" +
                 "\"author\":\"Ahmed Usman\"\n" +
                 "}\n";
         return Payload;
