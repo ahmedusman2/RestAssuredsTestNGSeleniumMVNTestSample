@@ -29,7 +29,7 @@ public class RestAssuredJiraTest {
         RestAssured.baseURI = "http://localhost:8080";
         SessionFilter session = new SessionFilter();
 
-
+        // POST: Login to jira to create session
         String loginResponse = given()
                 .header("Content-Type", "application/json")
                 .body("{ \"username\": \"ahmed.usman_shani\", \"password\": \"Redhat111!\" }").log().all()
@@ -60,8 +60,16 @@ public class RestAssuredJiraTest {
                 .then().log().all().assertThat().statusCode(200);
 
 
-    }
+        // GET: Get issues form Jira
 
+        String getResponseAllIssueDetails = given().pathParams("key", "RAP-2").log().all()
+                .header("Content-Type", "application/json")
+                .filter(session)
+                .when().get("/rest/api/2/issue/{key}")
+                .then().assertThat().statusCode(200).log().all().extract().response().asString();
+
+        System.out.println(getResponseAllIssueDetails);
+    }
 
 
 }
