@@ -66,19 +66,23 @@ public class RestAssuredJiraTestContinued {
         System.out.println("===>commentID: " + commentID);
 
 
-
         // GET: Get issues form Jira with query parameters
-        String getIssueDetails = given().pathParams("key", "RAP-3").log().all()
+        String getIssueDetails = given().pathParams("id", "10007").log().all()
                 .header("Content-Type", "application/json")
                 .filter(session)
                 .queryParam("fields", "comment")
-                .when().get("/rest/api/2/issue/{key}")
+                .when().get("/rest/api/2/issue/{id}")
                 .then().assertThat().statusCode(200).log().all().extract().response().asString();
 
         System.out.println(getIssueDetails);
-        JsonPath js2 = new JsonPath(getIssueDetails);
-        int commentsCount = js2.getInt("fields.comment.comments.size()");
-        System.out.println("===> commentsCount: "+ commentsCount);
+        JsonPath js1 = new JsonPath(getIssueDetails);
+        int commentsCount = js1.getInt("fields.comment.comments.size()");
+        System.out.println("===> commentsCount: " + commentsCount);
+
+        for (int i = 0; i < commentsCount; i++) {
+            System.out.println(js1.get("fields.comment.comments[" + i + "].id").toString());
+
+        }
 
     }
 
