@@ -3,6 +3,7 @@ package DemoTestNG;
 import io.restassured.RestAssured;
 import io.restassured.filter.session.SessionFilter;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 import java.io.File;
 
@@ -48,12 +49,13 @@ public class RestAssuredJiraTestContinued {
                 .assertThat().statusCode(200).extract().response().asString();
 
         System.out.println(loginResponse);
+        String expectedMsg = "Comment added from RestAssured";
 
 
         // POST: ADD comment to issue to a JIRA issue:
         // what ever you define here will be treated as path variable
         String addCommentResponse = given().pathParams("id", "10007").log().all().header("Content-Type", "application/json").body("{\n" +
-                        "    \"body\": \"RestAssured: comment added from RestAssured2\",\n" +
+                        "    \"body\": \"" + expectedMsg + "\",\n" +
                         "    \"visibility\": {\n" +
                         "        \"type\": \"role\",\n" +
                         "        \"value\": \"Administrators\"\n" +
@@ -62,8 +64,6 @@ public class RestAssuredJiraTestContinued {
                 .when().post("/rest/api/2/issue/{id}/comment").then().assertThat().statusCode(201).extract().asString();
         System.out.println("===>addCommentResponse: " + addCommentResponse);
         JsonPath js = new JsonPath(addCommentResponse);
-        String commentID = js.getString("id");
-        System.out.println("===>commentID: " + commentID);
 
 
         // GET: Get issues form Jira with query parameters
@@ -80,8 +80,15 @@ public class RestAssuredJiraTestContinued {
         System.out.println("===> commentsCount: " + commentsCount);
 
         for (int i = 0; i < commentsCount; i++) {
-            System.out.println(js1.get("fields.comment.comments[" + i + "].id").toString());
+            // First get the comment id
+            String commentID = js1.get("fields.comment.comments[" + i + "].id").toString();
+            if (getIssueDetails.equalsIgnoreCase(commentID)) {
+                String actualMessage = js1.get("fields.comment.comments[" + i + "].body").toString();
+                System.out.println("actualMessage: " + actualMessage);
+                System.out.println("expectedMsg: " + expectedMsg);
+                Assert.assertEquals(actualMessage, expectedMsg);
 
+            }
         }
 
     }
