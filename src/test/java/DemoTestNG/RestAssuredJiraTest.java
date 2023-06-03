@@ -12,15 +12,16 @@ public class RestAssuredJiraTest {
     public static void main(String[] args) {
 
 
-        // given():1. Header of the request,
+        // Given():
+        //         1. Header of the request,
         //         2. Query parameters/Path parameters,
         //         3. BaseURI
         //         4. Body of the request (if any)
         //         5. Session filter (if any)
         //         6. Multi Path for attachments(if any)
-        // when():
+        // When():
         //         1. http method,
-        //         2. resource
+        //         2. Resource
         // Then(): 1. Validate response:
         //         2. Header,
         //         3. Status code
@@ -42,8 +43,9 @@ public class RestAssuredJiraTest {
         System.out.println(loginResponse);
 
 
-        //POST: ADD comment to issue to a JIRA issue:
-        given().pathParams("id", "10007").log().all().header("Content-Type", "application/json").body("{\n" + // what ever you define here will be treated as path variable
+        // POST: ADD comment to issue to a JIRA issue:
+        // what ever you define here will be treated as path variable
+        given().pathParams("id", "10007").log().all().header("Content-Type", "application/json").body("{\n" +
                         "    \"body\": \"RestAssured: comment added from RestAssured2\",\n" +
                         "    \"visibility\": {\n" +
                         "        \"type\": \"role\",\n" +
@@ -61,7 +63,6 @@ public class RestAssuredJiraTest {
 
 
         // GET: Get issues form Jira
-
         String getResponseAllIssueDetails = given().pathParams("key", "RAP-2").log().all()
                 .header("Content-Type", "application/json")
                 .filter(session)
@@ -69,6 +70,20 @@ public class RestAssuredJiraTest {
                 .then().assertThat().statusCode(200).log().all().extract().response().asString();
 
         System.out.println(getResponseAllIssueDetails);
+
+
+        // GET: Get issues form Jira with query parameters
+        String getIssueResponseWithQueryParameters = given().pathParams("key", "RAP-3").log().all()
+                .header("Content-Type", "application/json")
+                .filter(session)
+                .queryParam("fields", "comment")
+                .queryParam("expand", "changelog")
+                .when().get("/rest/api/2/issue/{key}")
+                .then().assertThat().statusCode(200).log().all().extract().response().asString();
+
+        System.out.println(getIssueResponseWithQueryParameters);
+
+
     }
 
 
