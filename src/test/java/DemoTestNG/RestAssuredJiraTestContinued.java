@@ -39,7 +39,7 @@ public class RestAssuredJiraTestContinued {
         SessionFilter session = new SessionFilter();
 
         // POST: Login to jira to create session
-        String loginResponse = given()
+        String loginResponse = given().relaxedHTTPSValidation()
                 .header("Content-Type", "application/json")
                 .body("{ \"username\": \"ahmed.usman_shani\", \"password\": \"Redhat111!\" }").log().all()
                 .filter(session)
